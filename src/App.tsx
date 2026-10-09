@@ -1,3 +1,4 @@
+import { useI18n } from '@/i18n/I18nProvider'
 import { Catalog } from '@/sections/Catalog'
 import { Cities } from '@/sections/Cities'
 import { Faq } from '@/sections/Faq'
@@ -10,13 +11,14 @@ import { Problem } from '@/sections/Problem'
 import { Trust } from '@/sections/Trust'
 
 export default function App() {
+  const { t } = useI18n()
   return (
     <>
       <a
         href="#contenido"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-background focus:px-4 focus:py-2 focus:shadow-menu"
       >
-        Saltar al contenido
+        {t.skipToContent}
       </a>
       <Header />
       <main id="contenido">

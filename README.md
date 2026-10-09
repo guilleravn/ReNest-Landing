@@ -20,4 +20,5 @@ Every call to action links to the app. `VITE_APP_URL` sets its base URL and defa
 - `src/sections/`: one component per landing section, composed in `src/App.tsx`.
 - `src/components/`: shared pieces (buttons, logo, listing card, section heading).
 - `src/components/listings.ts`: the sample listings, mirroring the backend's demo seed.
-- User-facing copy is in Spanish; code and docs are in English.
+- `src/i18n/`: Spanish and English copy (`messages.ts`) and the provider. The first visit follows the browser language, the ES | EN switch in the header overrides it, and the choice is saved in `localStorage`. A new string goes in both languages; `en` is typed against `es`, so a missing key fails the build.
+- Code and docs are in English.

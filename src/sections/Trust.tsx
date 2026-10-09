@@ -1,64 +1,31 @@
 import { BadgeCheck, ClipboardCheck, EyeOff, MapPinned, MessageCircle, Star, Zap, type LucideIcon } from 'lucide-react'
 import { Section, SectionHeading } from '@/components/Section'
+import { useI18n } from '@/i18n/I18nProvider'
+import type { Messages } from '@/i18n/messages'
 import { cn } from '@/lib'
 
-type Feature = { icon: LucideIcon; title: string; text: string; tone: string }
-
-const features: Feature[] = [
-  {
-    icon: MapPinned,
-    title: 'Solo lugares públicos',
-    text: 'Los puntos de recogida son plazas, cafés o centros comerciales. Nunca una dirección particular.',
-    tone: 'bg-protected-surface text-protected',
-  },
-  {
-    icon: BadgeCheck,
-    title: 'Vendedores verificados',
-    text: 'El equipo de ReNest verifica a mano a algunos vendedores, y lo vas a ver en cada publicación.',
-    tone: 'bg-verified-surface text-verified',
-  },
-  {
-    icon: Zap,
-    title: 'Sin dobles reservas',
-    text: 'Si dos personas confirman a la vez, solo una se lo lleva. La otra lo sabe al instante.',
-    tone: 'bg-amber-surface text-amber-strong',
-  },
-  {
-    icon: ClipboardCheck,
-    title: 'Checklist de recepción',
-    text: '¿Coincide con las fotos? ¿Funciona? ¿Trae todo? Lo confirmas al recibir, y puedes reportar lo que quieras.',
-    tone: 'bg-green-surface text-green-strong',
-  },
-  {
-    icon: Star,
-    title: 'Calificaciones reales',
-    text: 'Solo quien compró y recibió el artículo puede calificar, una sola vez. Sin reseñas infladas.',
-    tone: 'bg-amber-surface text-amber-strong',
-  },
-  {
-    icon: EyeOff,
-    title: 'Tu número, protegido',
-    text: 'El WhatsApp del vendedor solo lo ven usuarios registrados. El tuyo, solo el vendedor de lo que reservaste.',
-    tone: 'bg-blue-surface text-blue-strong',
-  },
+const features: Array<{ key: keyof Messages['trust']['features']; icon: LucideIcon; tone: string }> = [
+  { key: 'places', icon: MapPinned, tone: 'bg-protected-surface text-protected' },
+  { key: 'verified', icon: BadgeCheck, tone: 'bg-verified-surface text-verified' },
+  { key: 'noDouble', icon: Zap, tone: 'bg-amber-surface text-amber-strong' },
+  { key: 'checklist', icon: ClipboardCheck, tone: 'bg-green-surface text-green-strong' },
+  { key: 'ratings', icon: Star, tone: 'bg-amber-surface text-amber-strong' },
+  { key: 'phone', icon: EyeOff, tone: 'bg-blue-surface text-blue-strong' },
 ]
 
 export function Trust() {
+  const { t } = useI18n()
   return (
     <Section id="confianza">
-      <SectionHeading
-        overline="Confianza"
-        title="Diseñado para que ambos lleguen tranquilos al encuentro"
-        intro="No movemos tu dinero: pagas en persona, cuando ves el producto. Lo que sí hacemos es poner reglas claras para todos."
-      />
+      <SectionHeading overline={t.trust.overline} title={t.trust.title} intro={t.trust.intro} />
       <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
         {features.map((f) => (
-          <div key={f.title}>
+          <div key={f.key}>
             <span className={cn('flex size-11 items-center justify-center rounded-xl', f.tone)}>
               <f.icon className="size-5" aria-hidden="true" />
             </span>
-            <h3 className="mt-4 font-sans text-lg font-semibold">{f.title}</h3>
-            <p className="mt-2 leading-relaxed text-text-muted">{f.text}</p>
+            <h3 className="mt-4 font-sans text-lg font-semibold">{t.trust.features[f.key].title}</h3>
+            <p className="mt-2 leading-relaxed text-text-muted">{t.trust.features[f.key].text}</p>
           </div>
         ))}
       </div>
@@ -69,27 +36,22 @@ export function Trust() {
 }
 
 function Lifecycle() {
+  const { t } = useI18n()
+  const l = t.trust.lifecycle
   return (
     <div className="mt-20 rounded-3xl border border-border bg-surface p-6 md:p-10">
       <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.4fr]">
         <div>
-          <p className="text-overline text-green-strong">Cada quien confirma lo suyo</p>
-          <h3 className="mt-3 text-3xl leading-tight">El vendedor confirma la entrega. Tú, la recepción.</h3>
-          <p className="mt-4 text-text-muted">
-            Ninguno cierra la operación por el otro. Aunque el vendedor ya haya marcado la entrega, tú sigues pudiendo
-            revisar el artículo, reportar algo y calificar.
-          </p>
+          <p className="text-overline text-green-strong">{l.overline}</p>
+          <h3 className="mt-3 text-3xl leading-tight">{l.title}</h3>
+          <p className="mt-4 text-text-muted">{l.text}</p>
         </div>
         <div className="grid gap-6">
-          <Track
-            who="Vendedor"
-            stages={['Activo', 'En proceso', 'Completado']}
-            events={['Alguien reserva', 'Confirma la entrega']}
-          />
-          <Track who="Comprador" stages={['Agendado', 'Completado']} events={['Confirma la recepción']} />
+          <Track who={l.seller} stages={l.sellerStages} events={l.sellerEvents} />
+          <Track who={l.buyer} stages={l.buyerStages} events={l.buyerEvents} />
           <p className="flex items-center gap-2 text-sm text-text-muted">
             <MessageCircle className="size-4 text-green-strong" aria-hidden="true" />
-            Todo lo que haya que hablar, se habla por WhatsApp.
+            {l.whatsapp}
           </p>
         </div>
       </div>

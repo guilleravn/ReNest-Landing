@@ -1,19 +1,22 @@
 import { Menu, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { ButtonLink } from '@/components/Button'
+import { LanguageSwitch } from '@/components/LanguageSwitch'
 import { Logo } from '@/components/Logo'
+import { useI18n } from '@/i18n/I18nProvider'
 import { appLink, cn } from '@/lib'
 
-const links = [
-  { href: '#como-funciona', label: 'Cómo funciona' },
-  { href: '#confianza', label: 'Confianza' },
-  { href: '#catalogo', label: 'Catálogo' },
-  { href: '#preguntas', label: 'Preguntas' },
-]
-
 export function Header() {
+  const { t } = useI18n()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+
+  const links = [
+    { href: '#como-funciona', label: t.header.nav.how },
+    { href: '#confianza', label: t.header.nav.trust },
+    { href: '#catalogo', label: t.header.nav.catalog },
+    { href: '#preguntas', label: t.header.nav.faq },
+  ]
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -29,12 +32,12 @@ export function Header() {
         scrolled || open ? 'border-border' : 'border-transparent',
       )}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <a href="#inicio" aria-label="ReNest, ir al inicio">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+        <a href="#inicio" aria-label={t.header.home}>
           <Logo className="h-8" />
         </a>
 
-        <nav aria-label="Principal" className="hidden items-center gap-8 md:flex">
+        <nav aria-label="Principal" className="hidden items-center gap-6 lg:flex">
           {links.map((l) => (
             <a key={l.href} href={l.href} className="text-sm font-medium text-text-muted transition-colors hover:text-foreground">
               {l.label}
@@ -42,27 +45,31 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-2 lg:flex">
+          <LanguageSwitch />
           <ButtonLink href={appLink('/login')} variant="outline">
-            Ingresar
+            {t.header.login}
           </ButtonLink>
-          <ButtonLink href={appLink('/feed')}>Explorar productos</ButtonLink>
+          <ButtonLink href={appLink('/feed')}>{t.header.explore}</ButtonLink>
         </div>
 
-        <button
-          type="button"
-          className="inline-flex size-10 items-center justify-center rounded-lg text-foreground hover:bg-surface-sunken md:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? <X className="size-5" /> : <Menu className="size-5" />}
-        </button>
+        <div className="flex items-center gap-2 lg:hidden">
+          <LanguageSwitch />
+          <button
+            type="button"
+            className="inline-flex size-10 items-center justify-center rounded-lg text-foreground hover:bg-surface-sunken"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? t.header.closeMenu : t.header.openMenu}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
       </div>
 
       {open && (
-        <nav id="mobile-nav" aria-label="Principal" className="border-t border-border px-4 pb-6 pt-2 md:hidden">
+        <nav id="mobile-nav" aria-label="Principal" className="border-t border-border px-4 pb-6 pt-2 lg:hidden">
           <ul className="flex flex-col">
             {links.map((l) => (
               <li key={l.href}>
@@ -74,10 +81,10 @@ export function Header() {
           </ul>
           <div className="mt-4 grid gap-2">
             <ButtonLink href={appLink('/feed')} size="lg">
-              Explorar productos
+              {t.header.explore}
             </ButtonLink>
             <ButtonLink href={appLink('/login')} variant="outline" size="lg">
-              Ingresar
+              {t.header.login}
             </ButtonLink>
           </div>
         </nav>

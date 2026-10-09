@@ -1,16 +1,11 @@
 import { Armchair, Coffee, CookingPot, Gamepad2, Headphones, Laptop, Lamp, Sofa, type LucideIcon } from 'lucide-react'
+import type { Messages } from '@/i18n/messages'
 
-export type Condition = 'LIKE_NEW' | 'GENTLY_USED' | 'HEAVILY_USED'
-export type Category = 'Muebles' | 'Electrónica' | 'Hogar'
-
-export const conditionLabel: Record<Condition, string> = {
-  LIKE_NEW: 'Como nuevo',
-  GENTLY_USED: 'Poco uso',
-  HEAVILY_USED: 'Muy usado',
-}
+export type Condition = keyof Messages['catalog']['conditions']
+export type Category = keyof Messages['catalog']['categories']
 
 export type SampleListing = {
-  title: string
+  id: keyof Messages['catalog']['titles']
   priceCents: number
   condition: Condition
   category: Category
@@ -20,16 +15,16 @@ export type SampleListing = {
   tint: 'green' | 'amber' | 'blue' | 'stone'
 }
 
-/** Mirrors a few of the backend's demo listings (prisma/seed/data.ts). */
+/** Mirrors a few of the backend's demo listings (prisma/seed/data.ts). Titles live in the messages. */
 export const sampleListings: SampleListing[] = [
-  { title: 'Sofá de tres cuerpos gris', priceCents: 85000, condition: 'GENTLY_USED', category: 'Muebles', city: 'Cochabamba', verified: true, icon: Sofa, tint: 'amber' },
-  { title: 'Laptop Lenovo ThinkPad T480', priceCents: 180000, condition: 'GENTLY_USED', category: 'Electrónica', city: 'Arequipa', verified: false, icon: Laptop, tint: 'blue' },
-  { title: 'Audífonos Sony WH-1000XM4', priceCents: 95000, condition: 'LIKE_NEW', category: 'Electrónica', city: 'Cochabamba', verified: true, icon: Headphones, tint: 'stone' },
-  { title: 'Juego de ollas de acero inoxidable', priceCents: 25000, condition: 'GENTLY_USED', category: 'Hogar', city: 'Arequipa', verified: false, icon: CookingPot, tint: 'green' },
-  { title: 'Consola Nintendo Switch con dos controles', priceCents: 140000, condition: 'GENTLY_USED', category: 'Electrónica', city: 'Cochabamba', verified: true, icon: Gamepad2, tint: 'blue' },
-  { title: 'Lámpara de pie de madera', priceCents: 12000, condition: 'LIKE_NEW', category: 'Hogar', city: 'Arequipa', verified: false, icon: Lamp, tint: 'amber' },
-  { title: 'Silla de escritorio ergonómica', priceCents: 15000, condition: 'HEAVILY_USED', category: 'Muebles', city: 'Cochabamba', verified: true, icon: Armchair, tint: 'stone' },
-  { title: 'Cafetera italiana de 6 tazas', priceCents: 4500, condition: 'HEAVILY_USED', category: 'Hogar', city: 'Arequipa', verified: false, icon: Coffee, tint: 'green' },
+  { id: 'sofa', priceCents: 85000, condition: 'GENTLY_USED', category: 'FURNITURE', city: 'Cochabamba', verified: true, icon: Sofa, tint: 'amber' },
+  { id: 'laptop', priceCents: 180000, condition: 'GENTLY_USED', category: 'ELECTRONICS', city: 'Arequipa', verified: false, icon: Laptop, tint: 'blue' },
+  { id: 'headphones', priceCents: 95000, condition: 'LIKE_NEW', category: 'ELECTRONICS', city: 'Cochabamba', verified: true, icon: Headphones, tint: 'stone' },
+  { id: 'pots', priceCents: 25000, condition: 'GENTLY_USED', category: 'HOME', city: 'Arequipa', verified: false, icon: CookingPot, tint: 'green' },
+  { id: 'switch', priceCents: 140000, condition: 'GENTLY_USED', category: 'ELECTRONICS', city: 'Cochabamba', verified: true, icon: Gamepad2, tint: 'blue' },
+  { id: 'lamp', priceCents: 12000, condition: 'LIKE_NEW', category: 'HOME', city: 'Arequipa', verified: false, icon: Lamp, tint: 'amber' },
+  { id: 'chair', priceCents: 15000, condition: 'HEAVILY_USED', category: 'FURNITURE', city: 'Cochabamba', verified: true, icon: Armchair, tint: 'stone' },
+  { id: 'coffee', priceCents: 4500, condition: 'HEAVILY_USED', category: 'HOME', city: 'Arequipa', verified: false, icon: Coffee, tint: 'green' },
 ]
 
 export const tintClass: Record<SampleListing['tint'], string> = {
