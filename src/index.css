@@ -1,0 +1,173 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/urbanist';
+@import '@fontsource/diphylleia/latin-400.css';
+
+/* ------------------------------------------------------------------ */
+/* Design tokens: same values as ReNest-Frontend/src/index.css so the  */
+/* landing and the app read as one brand. Light mode only.             */
+/* ------------------------------------------------------------------ */
+:root {
+  --font-heading: 'Diphylleia', 'Playfair Display', Georgia, serif;
+  --font-body: 'Urbanist Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --color-base-background: #ffffff;
+  --color-base-surface: #fafaf9;
+  --color-base-surface-sunken: #f5f5f4;
+  --color-base-border: #e7e5e4;
+  --color-base-border-strong: #d6d3d1;
+  --color-base-text: #1c1917;
+  --color-base-text-muted: #57534e;
+  --color-base-text-subtle: #78716c;
+  --color-base-text-inverse: #ffffff;
+
+  --color-green: #10b981;
+  --color-green-strong: #047857;
+  --color-green-hover: #065f46;
+  --color-green-active: #064e3b;
+  --color-green-surface: #ecfdf5;
+  /* Landing only: soft text on the dark green band. */
+  --color-green-on-dark: #a7f3d0;
+
+  --color-blue: #2563eb;
+  --color-blue-strong: #1d4ed8;
+  --color-blue-surface: #eff6ff;
+
+  --color-amber: #f59e0b;
+  --color-amber-strong: #b45309;
+  --color-amber-surface: #fffbeb;
+
+  --color-verified: #047857;
+  --color-verified-surface: #ecfdf5;
+  --color-protected: #1d4ed8;
+  --color-protected-surface: #eff6ff;
+
+  --color-focus: #047857;
+
+  --radius-base: 0.75rem;
+  --radius-sheet: 1rem;
+
+  --shadow-card: 0 1px 2px 0 #1c19170f;
+  --shadow-menu: 0 4px 12px -2px #1c19171a;
+  --shadow-sheet: 0 12px 32px -8px #1c191724;
+  /* Landing only: the floating phone in the hero. */
+  --shadow-float: 0 30px 60px -20px #064e3b40, 0 12px 24px -12px #1c191726;
+}
+
+@theme inline {
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-heading);
+
+  --color-background: var(--color-base-background);
+  --color-foreground: var(--color-base-text);
+  --color-surface: var(--color-base-surface);
+  --color-surface-sunken: var(--color-base-surface-sunken);
+  --color-border: var(--color-base-border);
+  --color-border-strong: var(--color-base-border-strong);
+  --color-text-muted: var(--color-base-text-muted);
+  --color-text-subtle: var(--color-base-text-subtle);
+  --color-text-inverse: var(--color-base-text-inverse);
+  --color-ring: var(--color-focus);
+
+  --color-green: var(--color-green);
+  --color-green-strong: var(--color-green-strong);
+  --color-green-hover: var(--color-green-hover);
+  --color-green-active: var(--color-green-active);
+  --color-green-surface: var(--color-green-surface);
+  --color-green-on-dark: var(--color-green-on-dark);
+  --color-blue: var(--color-blue);
+  --color-blue-strong: var(--color-blue-strong);
+  --color-blue-surface: var(--color-blue-surface);
+  --color-amber: var(--color-amber);
+  --color-amber-strong: var(--color-amber-strong);
+  --color-amber-surface: var(--color-amber-surface);
+  --color-verified: var(--color-verified);
+  --color-verified-surface: var(--color-verified-surface);
+  --color-protected: var(--color-protected);
+  --color-protected-surface: var(--color-protected-surface);
+
+  --radius-sm: calc(var(--radius-base) - 4px);
+  --radius-md: calc(var(--radius-base) - 2px);
+  --radius-lg: var(--radius-base);
+  --radius-xl: calc(var(--radius-base) + 4px);
+  --radius-2xl: calc(var(--radius-base) + 8px);
+  --radius-sheet: var(--radius-sheet);
+
+  --shadow-card: var(--shadow-card);
+  --shadow-menu: var(--shadow-menu);
+  --shadow-sheet: var(--shadow-sheet);
+  --shadow-float: var(--shadow-float);
+}
+
+@layer base {
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    letter-spacing: -0.013em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    .animate-fade-up,
+    .animate-float {
+      animation: none !important;
+    }
+  }
+}
+
+@utility text-overline {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@utility price-text {
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@utility animate-float {
+  animation: float-y 6s ease-in-out infinite;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@utility animate-fade-up {
+  animation: fade-up 0.5s ease-out both;
+}
